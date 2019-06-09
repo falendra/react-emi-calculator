@@ -119,7 +119,7 @@ render()
             <Container className="show-grid mainContainer">
                 <Row>
                     <Col className="leftSide" xs={12} md={6}>
-                        <Form horizontal>
+                        <Form horizontal="true">
                             <SliderAmount
                                 value={this.state.valueAmount}
                                 min={this.state.minAmount}

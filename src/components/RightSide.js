@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, ButtonGroup, Col} from 'react-bootstrap';
+import {Col} from 'react-bootstrap';
 
 
 class RightSide extends Component {
