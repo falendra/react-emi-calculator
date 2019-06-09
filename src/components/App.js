@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import SliderAmount from './SliderAmount';
 import SliderDuration from './SliderDuration';
+import RightSide from './RightSide';
 import { Container ,Row, Col, Form} from 'react-bootstrap';
 import PropTypes from 'prop-types'; 
-import './App.css';
+import '../css/App.css';
 
 
 class EmiCalculator extends Component {
 
   constructor(props) {
     super(props);
-    
+
     // save props values in to the state
     this.state = {
 
@@ -57,7 +58,13 @@ render()
                         </Form>
                         
                     </Col>
+                    <RightSide
+                    currancy={this.props.currancy}
+                    amount={this.state.amountToRepay}
+                    monthly={this.state.monthlyInst}
+                    APR={this.state.interestRate}
                     
+                />
                     
                </Row>
             </Container>
