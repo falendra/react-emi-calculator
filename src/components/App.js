@@ -30,8 +30,88 @@ class EmiCalculator extends Component {
         
 
     };
-   
+    this.update =this.update.bind(this)
 }
+
+update=( e )=>{
+  // Assign to let changedID ID of slider which has been changed
+  let changedID = e.target.id;
+ 
+  if (changedID === 'sliderAmount') {
+      this.setState({valueAmount: e.target.value},()=>{console.log(this.state.valueAmount)});
+      
+     
+      console.log('NEW ACTION DETECTED: ID - '+e.target.id + ': has been changed. New value: '+this.props.currancy + e.target.value);
+  }
+  if (changedID === 'sliderDuration'){
+      this.setState({valueDuration: e.target.value},()=>{console.log(this.state.valueDuration)});
+      
+      console.log('NEW ACTION DETECTED: ID - '+e.target.id + ': has been changed. New value: '+ e.target.value+' months');
+  }
+
+ 
+   // if button credit history clicked set APR to choosen value
+  
+}
+
+
+
+componentDidMount() {
+  console.log("inside mount");
+  console.log(this.state.monthlyInst)
+
+      fetch('https://ftl-frontend-test.herokuapp.com/interest?amount='+this.state.valueAmount+'&numMonths='+this.state.valueDuration+'&format=json&nojsoncallback=1')
+    .then(response=> {
+      
+      return response.json();
+    })
+    .then( data=> {
+      
+      // this.setState({monthlyInst:data.monthlyPayment.amount});
+      // this.setState({interestRate:data.interestRate})
+         
+      })
+      
+  
+    
+}
+
+
+
+
+
+shouldComponentUpdate(nextProps,nextState){
+
+  
+  // if(this.state.valueAmount!==nextState.valueAmount || this.state.valueDuration !== nextState.valueDuration){
+  //   console.log("should ")
+
+  //   return true;
+  // }
+  return true;
+    
+  }
+
+componentDidUpdate = (prevProps,prevState) => {
+
+  if(this.state.valueAmount!==prevState.valueAmount || this.state.valueDuration !== prevState.valueDuration){
+
+  fetch('https://ftl-frontend-test.herokuapp.com/interest?amount='+this.state.valueAmount+'&numMonths='+this.state.valueDuration+'&format=json&nojsoncallback=1')
+    .then(response=> {
+      
+      return response.json();
+    })
+    .then( data=> {
+      this.setState({monthlyInst:data.monthlyPayment.amount},()=>{console.log(this.state.monthlyInst)
+      })
+      this.setState({interestRate:data.interestRate},()=>{console.log(this.state.interestRate)
+      })
+  })
+}    
+        
+         
+}
+
 render()
     {
         console.log('inside render')
@@ -44,7 +124,7 @@ render()
                                 value={this.state.valueAmount}
                                 min={this.state.minAmount}
                                 max={this.state.maxAmount}
-                                //onChange={this.update.bind(this)}
+                                onChange={this.update.bind(this)}
                                 step={this.state.stepAmount}
                                 currancy={this.props.currancy}
                             />
@@ -52,12 +132,13 @@ render()
                                 value={this.state.valueDuration}
                                 min={this.state.minDuration}
                                 max={this.state.maxDuration}
-                                //onChange={this.update.bind(this)}
+                                onChange={this.update.bind(this)}
                                 step={this.state.stepDuration}
                             />
                         </Form>
                         
                     </Col>
+
                     <RightSide
                     currancy={this.props.currancy}
                     amount={this.state.amountToRepay}
